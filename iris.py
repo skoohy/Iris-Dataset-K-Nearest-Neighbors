@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 from confidence import confidence1 as confidence1 # Confidence Calculator 1
-from confidence import confidence2 as confidence2 # Confidence Calculator 1
+from confidence import confidence2 as confidence2 # Confidence Calculator 2
 from accuracy import accuracy as accuracy         # Accuracy Calculator
 plt.rcParams['axes.linewidth'] = 2
 plt.rcParams.update({'font.size': 10})
