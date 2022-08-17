@@ -3,10 +3,10 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 from confidence import confidence1 as confidence1 # Confidence Calculator 1
-from confidence import confidence2 as confidence2 # Confidence Calculator 2
+from confidence import confidence2 as confidence2 # Confidence Calculator 1
 from accuracy import accuracy as accuracy         # Accuracy Calculator
+plt.style.use(['science', 'notebook'])
 plt.rcParams['axes.linewidth'] = 2
-plt.rcParams.update({'font.size': 10})
 plt.rc('axes', edgecolor='black')
 random.seed(87)
 
@@ -17,28 +17,20 @@ iris_class = np.loadtxt("iris.data", delimiter=',', usecols=[4], dtype=str)
 
 iris_data = iris_data.tolist() # Turn iris_data into a list
 
-iris_full = [] # Create new list containing iris data and the class/label for
-# each observation 
-for i in range(0, 150):
-    if i >= 100: # Last 50 points are virginica (label = 2)
-        iris_full.append(iris_data[i])
-        iris_full[i].append(2)
-    elif i >= 50: # Points 50-100 are versicolor (label = 1)
-      iris_full.append(iris_data[i])
-      iris_full[i].append(1)
-    else: # First 50 points are setosa (label = 0)
-      iris_full.append(iris_data[i])
-      iris_full[i].append(0)
+# Create list containing iris data and the class/label for each observation 
+label = np.concatenate((np.zeros(50), np.ones(50), np.full(50, 2)))
+for i in range(len(iris_data)):
+    iris_data[i].append(label[i])
+    
+random.shuffle(iris_data)
 
-random.shuffle(iris_full)
-
-test_size  = 0.25 # Percentage that 'iris_full' will be used for testing
+test_size  = 0.25 # Percentage that 'iris_data' will be used for testing
 
 # First 75% of the data
-train_data = iris_full[:-int(test_size*len(iris_full))] 
+train_data = iris_data[:-int(test_size*len(iris_data))] 
 
 # Last 25% of the data
-test_data  = iris_full[-int(test_size*len(iris_full)):] 
+test_data  = iris_data[-int(test_size*len(iris_data)):] 
 
 train_set  = {0: [], 1: [], 2: []}
 test_set   = {0: [], 1: [], 2: []} 
@@ -82,16 +74,16 @@ print(hist_data)
 # These plots are built off this specific random seed, changes may need to 
 # be made for different seeds
 
-figure(figsize=(5, 4), dpi=300)
+figure(figsize=(6, 4), dpi=200)
 plt.hist(hist_data, bins = 22, edgecolor='black', color='green', alpha=0.65, linewidth=2)
 plt.xticks([x for x in range(min(hist_data), max(hist_data)+1, 2)])
 plt.xlabel("k")
 plt.grid(False)
-plt.ylabel("Frequecy of occurances for a wrong guess")
+plt.ylabel("Occurances for a wrong guess", fontsize=15)
 plt.show()
 
 
-figure(figsize=(5, 4), dpi=300)
+figure(figsize=(6, 4), dpi=200)
 plt.plot(k, [accuracy(train_set, test_set, ki) for ki in k], linewidth=3, color='black')
 plt.xticks([x for x in range(min(k), max(k)+1, 2)])
 plt.xlim(min(k), max(k))
@@ -100,7 +92,7 @@ plt.grid(True)
 plt.ylabel("Accuracy")
 plt.show()
 
-figure(figsize=(5, 4), dpi=300)
+figure(figsize=(6, 4), dpi=200)
 plt.scatter(hist_data, confid, linewidth=1.5, color='green')
 plt.xlim(3.5, 25.5)
 plt.ylim(0.45, 1.05)
@@ -109,8 +101,8 @@ for ki in range(4, 25):
 plt.scatter(25, 0.52, linewidth=1.5, color='red', label='Overlapping Points')
 plt.scatter(23, 0.5217391304347826,  linewidth=1.5, color='red')
 plt.xticks([x for x in range(min(k), max(k)+1, 2)])
-plt.legend(loc="upper center")
+plt.legend(loc="upper right", fontsize=12, frameon=True)
 plt.grid(False)
-plt.ylabel("Confidence level for inccorect guesses")
+plt.ylabel("Confidence for inccorect guesses", fontsize=15)
 plt.xlabel("k")
 plt.show()
