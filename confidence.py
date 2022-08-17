@@ -1,4 +1,4 @@
-from knn import knn as knn
+from knn import knn
 
 # Confidence: The count of the most common class / k
 # If k = 5 then we hope the most common is 5, however this isnt always the case 
