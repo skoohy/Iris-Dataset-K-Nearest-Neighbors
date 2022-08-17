@@ -1,4 +1,4 @@
-from knn import knn as knn
+from knn import knn
 
 def accuracy(train, test, ki):
     """Returns the accuracy for a k value in the knn algorithm
